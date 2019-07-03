@@ -3,6 +3,7 @@ import Particles from 'react-particles-js';
 import particleParams from './particlesParams';
 import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
+import Singin from './components/Singin/Singin';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -50,9 +51,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App light-silver">
         <Particles params={particleParams} className='particles' />
         <Navigation />
+        <Singin />
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
         <FaceRecognition imageUrl={this.state.imageUrl} boxes={this.state.boxes} width={this.state.imageWidth} height={this.state.imageHeight} />
