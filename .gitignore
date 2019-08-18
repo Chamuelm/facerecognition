@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/facerecognition/node_modules
+/facerecognition_api/node_modules
 /.pnp
 .pnp.js
 
@@ -10,6 +12,8 @@
 
 # production
 /build
+/facerecognition/build
+/facerecognition_api/build
 
 # misc
 .DS_Store
