@@ -84,10 +84,9 @@ class App extends React.Component {
           })
             .then(response => response.json())
             .then(count => {
-              this.setState({user: {
-                entries: count
-              }});
+              this.setState(Object.assign(this.state.user, {entries: count}));
             });
+
           this.displayBox(response.outputs[0].data.regions)
         }
       })
