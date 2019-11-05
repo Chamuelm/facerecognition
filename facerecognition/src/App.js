@@ -21,13 +21,30 @@ class App extends React.Component {
       imageWidth: "",
       imageHeight: "",
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     };
   }
 
   app = new Clarifai.App({
     apiKey: 'd74a49ea5cea4a9e8d8986dd96ecb910'
    });
+
+   loadUser = (data) => {
+     this.setState({user: {
+       id: data.id,
+       name: data.name,
+       email: data.email,
+       entries: data.entries,
+       joined: data.joined
+     }});
+   }
 
   displayBox = (boxes) => {
     this.updateDimensions();
@@ -36,9 +53,11 @@ class App extends React.Component {
 
   updateDimensions = () => {
     const image = document.getElementById('inputImage');
-    const width = Number(image.width);
-    const height = Number(image.height);
-    this.setState({imageWidth: width, imageHeight: height});
+    if (image) {
+      const width = Number(image.width);
+      const height = Number(image.height);
+      this.setState({imageWidth: width, imageHeight: height});
+    }
   }
 
   onInputChange = (event) => {
@@ -47,8 +66,31 @@ class App extends React.Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input, boxes: []});
-    this.app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-      .then((response) => this.displayBox(response.outputs[0].data.regions))
+
+    this.app.models.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
+      .then(response => {
+    //     var concepts = response['outputs'][0]['data']['concepts']
+    //   })
+
+    // this.app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    //   .then((response) => {
+        if (response) {
+          fetch('http://localhost:3000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id: this.state.user.id
+            })
+          })
+            .then(response => response.json())
+            .then(count => {
+              this.setState({user: {
+                entries: count
+              }});
+            });
+          this.displayBox(response.outputs[0].data.regions)
+        }
+      })
       .catch(error => console.log(error));
   }
 
@@ -70,12 +112,12 @@ class App extends React.Component {
         <Navigation onRouteChange={ this.onRouteChange } isSignedIn={ isSignedIn } />
         { route === 'home' ?
         <div>
-          <Rank />
+          <Rank name={this.state.user.name} entries={this.state.user.entries} />
           <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
           <FaceRecognition imageUrl={imageUrl} boxes={boxes} width={imageWidth} height={imageHeight} />
         </div> : ( route === 'signin' ?
-          <Singin onRouteChange={this.onRouteChange}/> :
-          <Register onRouteChange={this.onRouteChange}/>
+          <Singin onRouteChange={this.onRouteChange} loadUser={this.loadUser} /> :
+          <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         )}
       </div>
     );
