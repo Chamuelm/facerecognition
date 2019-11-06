@@ -29,7 +29,7 @@ class Register extends React.Component {
             body: JSON.stringify({
                 email: this.state.registerEmail,
                 password: this.state.registerPassword,
-                name: this.state.name
+                name: this.state.registerName
             })
         })
             .then(response => response.json())
@@ -47,33 +47,33 @@ class Register extends React.Component {
                 <main className="pa4">
                     <div className="measure center">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                            <legend className="f4 fw6 ph0 mh0">Sign In</legend>
+                            <legend className="f4 fw6 ph0 mh0">Register</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-                                <input 
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                                    type="text" 
-                                    name="name"  
+                                <input
+                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    type="text"
+                                    name="name"
                                     id="name"
                                     onChange={this.onNameChange}
                                 />
                             </div>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                                <input 
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                                    type="email" 
-                                    name="email-address"  
+                                <input
+                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    type="email"
+                                    name="email-address"
                                     id="email-address"
                                     onChange={this.onEmailChange}
                                 />
                             </div>
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                                <input 
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                                    type="password" 
-                                    name="password"  
+                                <input
+                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    type="password"
+                                    name="password"
                                     id="password"
                                     onChange={this.onPasswordChange}
                                 />

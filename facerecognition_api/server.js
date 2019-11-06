@@ -2,47 +2,56 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
+const knex = require('knex');
 
-const salt = bcrypt.genSaltSync(10);
+const db = knex({
+    client: 'postgres',
+    connection: {
+      host : '127.0.0.1',
+      user : '',
+      password : '',
+      database : 'facerecognition'
+    }
+  });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
-const database = {
-    users: [
-        {
-            id: '123',
-            name: 'Moshe',
-            email: 'chamuelm@gmail.com',
-            password: bcrypt.hashSync('cookies', salt),
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '124',
-            name: 'Sally',
-            email: 'sally@gmail.com',
-            password: bcrypt.hashSync('bananas', salt),
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
 
 app.get('/', (req, res) => {
    res.send(database.users.map(user => censorUser(user)));
 });
 
 app.post('/signin', (req, res) => {
-    if (req.body.email === database.users[0].email &&
-            bcrypt.compareSync(req.body.password, database.users[0].password)) {
-        console.log("Received signin request: ", req.body, " Response: Success");
-        res.json(censorUser(database.users[0]));
-    } else {
-        console.log("Received signin request: ", req.body, " Response: Fail");
-        res.status(400).json('error logging in');
-    }
+    const {email, password } = req.body;
+    console.log("Received signin request: ", JSON.stringify(req.body));
+    db.select('email', 'hash').from('login').where('email', '=', email)
+        .then(user => {
+            if (!(user && user.length)) {
+                console.log('Wrong credentials - no such email: ', email);
+                res.status(400).json('Wrong credentials');
+                return;
+            }
+
+            const isValid = bcrypt.compareSync(password, user[0].hash);
+            if (!isValid) {
+                console.log('Wrong credentials');
+                res.status(400).json('Wrong credentials');
+                return;
+            }
+
+            console.log('Singin request ', JSON.stringify(req.body), ". Response: Success");
+            db.select('*').from('users').where('email', '=', email)
+                .then(user => res.json(user[0]))
+                .catch(err => {
+                    console.log('Error getting user from DB: ', err);
+                    res.status(400).json('Error getting user');
+                });
+        })
+        .catch(err => {
+            console.log("Error retrieving data from DB. Wrong credentials? Details: ", err);
+            res.status(400).json('Wrong credentials');
+        });
 });
 
 app.post('/register', (req, res) => {
@@ -50,48 +59,57 @@ app.post('/register', (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
-    database.users.push({
-            id: '125',
-            name: name,
-            email: email,
-            password: hash,
-            entries: 0,
-            joined: new Date()
-    });
-    res.json(censorUser(database.users[database.users.length-1]));
+    db.transaction(trx => {
+        return trx.insert({
+            hash: hash,
+            email: email
+        })
+        .into('login')
+        .returning('email')
+        .then(loginEmailArr => {
+            return trx('users').returning('*').insert({
+                name: name,
+                email: loginEmailArr[0],
+                joined: new Date()
+            }).then(user => {
+                res.json(user[0]);
+            })
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+    })
+    .catch(err => {
+        console.log('Unable to register: ', err);
+        res.status(400).json("Unable to register")}
+    );
 });
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false;
-
-    database.users.forEach(user => {
-        if (user.id === id) {
-            res.json(censorUser(user));
-            found = true;
-        }
-    })
-
-    if (!found) {
-        res.json("No such user");
-    }
+    db.select('*').from('users').where({id})
+        .then(users => {
+            if (users.length) {
+                res.json(users[0]);
+            } else {
+                res.status(400).json("Not found");
+            }
+        }).catch(err => {
+            res.status(400).json("Error getting user");
+        });
  });
 
  app.put('/image', (req, res) => {
     const { id } = req.body;
-    let found = false;
 
-    database.users.forEach(user => {
-        if (user.id === id) {
-            user.entries++;
-            res.json(user.entries);
-            found = true;
-        }
-    })
-
-    if (!found) {
-        res.json("No such user");
-    }
+    db('users')
+        .where({id})
+        .increment('entries', 1)
+        .returning('entries')
+        .then(entries => res.json(entries))
+        .catch(err => {
+            console.log("Error while updating entries for id ", id, ": ", err);
+            res.status(400).json("Error updating entries");
+        });
 });
 
 app.listen(3000, () => {
