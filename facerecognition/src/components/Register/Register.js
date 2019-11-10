@@ -34,11 +34,24 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(user => {
-                if (user) {
+                if (user && user.id) {
                     this.props.loadUser(user);
+                    this.hideErrorPane();
                     this.props.onRouteChange('home');
+                } else {
+                    this.showErrorPane('Incorrect form submission');
                 }
             });
+    }
+
+    showErrorPane(message) {
+        const errorPane = document.getElementById("errorPane");
+        errorPane.innerHTML = message;
+        errorPane.style.display = "block";
+    }
+
+    hideErrorPane() {
+        document.getElementById("errorPane").style.display = "none";
     }
 
     render() {
@@ -79,6 +92,7 @@ class Register extends React.Component {
                                 />
                             </div>
                         </fieldset>
+                        <p className="f6 dim red db" id="errorPane" style={{display: "none"}} ></p>
                         <div className="">
                             <input
                                 onClick={this.onSubmitRegister}

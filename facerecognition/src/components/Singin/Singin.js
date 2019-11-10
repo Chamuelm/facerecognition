@@ -34,13 +34,19 @@ class Singin extends React.Component {
                         this.props.onRouteChange('home');
                     });
             } else {
-                this.showWrongCredentialsError();
+                this.showErrorPane('Wrong credentials. Try again.');
             }
         });
     }
 
-    showWrongCredentialsError() {
-        document.getElementById("wrongCredParagraph").style.display = "block";
+    showErrorPane(message) {
+        const errorPane = document.getElementById("errorPane");
+        errorPane.innerHTML = message;
+        errorPane.style.display = "block";
+    }
+
+    hideErrorPane() {
+        document.getElementById("errorPane").style.display = "none";
     }
 
     render() {
@@ -72,7 +78,7 @@ class Singin extends React.Component {
                                 />
                             </div>
                         </fieldset>
-                        <p className="f6 link dim red db pointer" id="wrongCredParagraph" style={{display: "none"}} >Wrong credentials. Try again.</p>
+                        <p className="f6 dim red db" id="errorPane" style={{display: "none"}} ></p>
                         <div className="">
                             <input
                                 onClick={this.onSubmitSignIn}
