@@ -79,7 +79,7 @@ class App extends React.Component {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input, boxes: []});
 
-    fetch('http://localhost:3000/image', {
+    fetch('https://arcane-hollows-13402.herokuapp.com/image', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
