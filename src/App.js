@@ -88,7 +88,13 @@ class App extends React.Component {
                 imageUrl: this.state.input
             })
           })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+
+          throw new Error(`Error while tring to fetch image data: Code: ${response.status} ${response.statusText}.`);
+        })
         .then(data => {
           this.setState(Object.assign(this.state.user, {entries: data.entries}));
           this.displayBox(data.apiResponse.outputs[0].data.regions);

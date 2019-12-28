@@ -6,7 +6,6 @@ import * as serviceWorker from './serviceWorker';
 import 'tachyons';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-console.log("ENV: ", process.env.NODE_ENV);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

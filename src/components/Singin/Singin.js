@@ -51,7 +51,6 @@ class Singin extends React.Component {
     }
 
     render() {
-        console.log("Config: ", config);
         const { onRouteChange } = this.props;
         return (
             <article className="br3 ba mv4 w-100 w-50-m w-25-l mw5 center shadow-5">
