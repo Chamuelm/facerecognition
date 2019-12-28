@@ -8,6 +8,7 @@ import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import './App.css';
 import Register from './components/Register/Register';
+import config from 'config';
 
 const initialState = {
   input: '',
@@ -79,7 +80,7 @@ class App extends React.Component {
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input, boxes: []});
 
-    fetch('https://arcane-hollows-13402.herokuapp.com/image', {
+    fetch(config.get('apiUrl')+'/image', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
