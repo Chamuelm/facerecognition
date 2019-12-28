@@ -1,4 +1,5 @@
 import React from 'react';
+import config from '../../config';
 
 class Register extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class Register extends React.Component {
     }
 
     onSubmitRegister = () => {
-        fetch('https://arcane-hollows-13402.herokuapp.com/register', {
+        fetch(config.apiUrl + '/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

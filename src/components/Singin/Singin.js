@@ -1,4 +1,5 @@
 import React from 'react';
+import config from '../../config';
 
 class Singin extends React.Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class Singin extends React.Component {
     }
 
     onSubmitSignIn = () => {
-        fetch('https://arcane-hollows-13402.herokuapp.com/signin', {
+        fetch(config.apiUrl + '/signin', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
