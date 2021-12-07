@@ -1,0 +1,19 @@
+name: Bump Version Comment
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sticky Pull Request Comment
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        with:
+          message: |
+            The npm package version is bumped after each merge. By default we bump the 'patch' version.
+            If you want to bump the major or minor versions add a commit with `[major]`/`[minor]` in one of the commits.
+            For more information about semantic versioning: <https://semver.org/>
+
+
