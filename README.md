@@ -1,4 +1,4 @@
-## FaceRecognition
+# FaceRecognition
 This is a React app whice provide an interface for uploading  image by url and get faces marked with rectangles.  
 This app have a [backend](https://github.com/Chamuelm/facerecognition_api) written with node.js.
 
