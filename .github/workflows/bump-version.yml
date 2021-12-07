@@ -21,7 +21,7 @@ jobs:
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
-          npm version patch && git push https://chamuelm:$AAA@github.com/Chamuelm/facerecognition.git
+          npm version patch && git push https://chamuelm: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@github.com/Chamuelm/facerecognition.git
         env:
           AAA: ${{ secrets.AAA }}
           GITHUB_TOKEN: ${{ secrets.AAA }}
