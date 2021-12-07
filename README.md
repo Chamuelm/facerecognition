@@ -4,7 +4,7 @@ This app have a [backend](https://github.com/Chamuelm/facerecognition_api) writt
 
 Production deployment in Heroku in this [link](https://face-recognition-chamuelm.herokuapp.com/)
 
-## Available Scripts
+## Available Scriptsa
 
 In the project directory, you can run:
 
