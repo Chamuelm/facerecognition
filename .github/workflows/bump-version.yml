@@ -21,6 +21,7 @@ jobs:
         run: |
               git config --global user.email "you@example.com"
               git config --global user.name "Your Name"
+              npm version patch
               git push https://chamuelm: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@github.com/Chamuelm/facerecognition.git
       - name: 'Automated Version Bump'
         id: version-bump
