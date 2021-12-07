@@ -3,7 +3,7 @@ name: 'Bump Version'
 on:
   push:
     branches:
-      - 'master'
+      - 'master_2'
 
 jobs:
   bump-version:
