@@ -17,14 +17,6 @@ jobs:
           ref: ${{ github.ref }}
       - name: 'cat package.json'
         run: cat ./package.json
-      - name: 'cat aaa'
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-          npm version patch && git push https://chamuelm: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@github.com/Chamuelm/facerecognition.git
-        env:
-          AAA: ${{ secrets.AAA }}
-          GITHUB_TOKEN: ${{ secrets.AAA }}
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
@@ -33,7 +25,7 @@ jobs:
           commit-message: 'Bumps version to {{version}}'
         env:
           GITHUB_ACTOR: chamuelm
-          GITHUB_TOKEN: ${{ secrets.AAA }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACTION_TOKEN }}
       - name: 'cat package.json'
         run: cat ./package.json
       - name: 'Output Stepa'
