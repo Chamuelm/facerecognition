@@ -24,7 +24,6 @@ jobs:
           tag-prefix: 'v2-'
           commit-message: 'Bumps version to {{version}}'
         env:
-          GITHUB_ACTOR: chamuelm
           GITHUB_TOKEN: ${{ secrets.GH_ACTION_TOKEN }}
       - name: 'cat package.json'
         run: cat ./package.json
