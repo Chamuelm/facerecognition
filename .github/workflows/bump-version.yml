@@ -24,7 +24,7 @@ jobs:
           tag-prefix: 'v'
           commit-message: 'Bumps version to {{version}}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.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 }}
       - name: 'cat package.json'
         run: cat ./package.json
       - name: 'Output Step'
