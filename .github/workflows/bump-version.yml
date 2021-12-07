@@ -18,7 +18,10 @@ jobs:
       - name: 'cat package.json'
         run: cat ./package.json
       - name: 'cat aaa'
-        run: npm version patch && git push https://chamuelm:$GITHUB_TOKEN@github.com/Chamuelm/facerecognition.git
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          npm version patch && git push https://chamuelm:$GITHUB_TOKEN@github.com/Chamuelm/facerecognition.git
         env:
           AAA: ${{ secrets.AAA }}
           GITHUB_TOKEN: ${{ secrets.AAA }}
