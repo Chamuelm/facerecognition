@@ -18,9 +18,9 @@ jobs:
       - name: 'cat package.json'
         run: cat ./package.json
       - name: 'cat aaa'
-        run: cat $AAA && cat $GITHUB_TOKEN
+        run: echo $AAA && echo $GITHUB_TOKEN
         env:
-          GITHUB_ACTOR: chamuelm
+          AAA: ${{ secrets.AAA }}
           GITHUB_TOKEN: ${{ secrets.AAA }}
       - name: 'Automated Version Bump'
         id: version-bump
