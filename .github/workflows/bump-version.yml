@@ -17,6 +17,11 @@ jobs:
           ref: ${{ github.ref }}
       - name: 'cat package.json'
         run: cat ./package.json
+      - name: 'Set credentials'
+        env:
+          GIT_USER: chamuelm
+          GIT_PASS: ${{ secrets.AAA }}
+        run: git config credential.helper "!f() { echo \"username=${GIT_USER}\\npassword=${GIT_PASS}\"; }; f"
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@master'
