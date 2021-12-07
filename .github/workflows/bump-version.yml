@@ -18,11 +18,9 @@ jobs:
       - name: 'cat package.json'
         run: cat ./package.json
       - name: banana
-        run: |
-              git config --global user.email "you@example.com"
-              git config --global user.name "Your Name"
-              npm version patch
-              git push https://chamuelm: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@github.com/Chamuelm/facerecognition.git
+        run: node -e "console.log(process.env.AAA)"
+        env:
+          AAA: ${{ secrets.GH_ACTION_TOKEN }}
       - name: 'Automated Version Bump'
         id: version-bump
         uses: 'phips28/gh-action-bump-version@v9.0.1'
