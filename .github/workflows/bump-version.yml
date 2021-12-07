@@ -1,0 +1,8 @@
+# https://github.com/marketplace/actions/automated-version-bump
+- name: Automated Version Bump
+  uses: phips28/gh-action-bump-version@v9.0.1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    tag-prefix:  'v'
+    commit-message: 'Bumps version to {{version}}'
